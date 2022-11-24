@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+</head>
+<body>
+<div ng-init="initialize()" ng-app="marianaApp" ng-controller="productsCtrl">
+    <div class="page">
+        <nav class="page__menu menu">
+            <ul class="menu__list r-list">
+                <li class="menu__group"><a href="index.html" class="menu__link r-link text-underlined">Home</a></li>
+                <li class="menu__group"><a href="cart.html" class="menu__link r-link text-underlined">Cart: {{ cartItems }}</a></li>
+                <li class="menu__group"><a href="login.html" class="menu__link r-link text-underlined">Log In / Sign Up</a></li>
+            </ul>
+        </nav>
+    </div>
+
+
+    <div id="main-container">
+        <h1 id="shopping-list-title">Cart list</h1>
+        <div id="shopping-list">
+            <div ng-repeat="item in cartList | orderBy: selectedOrder | limitTo: selectedLimit | filter: filterItemsBy" class="shopping-item">
+                <img src="{{ item.img }}" />
+                <p class="title">{{ item.title }}</p>
+                <p class="description">{{ item.description }}</p>
+                <p class="price">{{ item.price }} LEI</p>
+                <button ng-show="existsInCart(item.id)" ng-click="removeFromCart(item.id)" class="remove-to-cart">Remove from cart</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script src="constants.js"></script>
+<script>
+    angular.module('marianaApp', []).controller('productsCtrl', function ($scope) {
+        $scope.cartList = [];
+        $scope.cartItems = JSON.parse(localStorage.getItem('cart') || '[]')?.length;
+
+        $scope.removeFromCart = function(id){
+            let currentCart = JSON.parse(localStorage.getItem('cart') || '[]');
+
+            if(currentCart.includes(id)){
+                let index = currentCart.indexOf(id);
+                if (index > -1) {
+                    currentCart.splice(index, 1);
+                    $scope.cartItems--;
+                }
+            }
+
+            localStorage.setItem('cart', JSON.stringify(currentCart));
+            $scope.initialize();
+        }
+
+        $scope.existsInCart = function(id){
+            let currentCart = JSON.parse(localStorage.getItem('cart') || '[]');
+
+            return currentCart.includes(id);
+        }
+
+        $scope.initialize = function (){
+            $scope.cartList = [];
+
+            for(let index in ShoppingList){
+                if($scope.existsInCart(ShoppingList[index].id)){
+                    $scope.cartList.push(ShoppingList[index]);
+                }
+            }
+        }
+    });
+</script>
+</body>
+</html>
