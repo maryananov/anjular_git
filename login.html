@@ -44,7 +44,6 @@
 <script src="constants.js"></script>
 <script>
     angular.module('marianaApp', []).controller('loginCtrl', function ($scope) {
-        $scope.shoppingList = ShoppingList;
         $scope.cartItems = JSON.parse(localStorage.getItem('cart') || '[]')?.length;
 
         $scope.submitLogin = function(){
