@@ -70,10 +70,3 @@ const ShoppingList = [
     "description": "AMD Ryzen 3 3250U, 15.6inch, RAM 8GB, SSD 256GB, AMD Radeon"
   }
 ]
-
-const users = [
-  {
-    email: "admin@admin.com",
-    password: "administrator"
-  }
-]
