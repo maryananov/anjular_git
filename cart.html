@@ -21,7 +21,7 @@
     <div id="main-container">
         <h1 id="shopping-list-title">Cart list</h1>
         <div id="shopping-list">
-            <div ng-repeat="item in cartList | orderBy: selectedOrder | limitTo: selectedLimit | filter: filterItemsBy" class="shopping-item">
+            <div ng-repeat="item in cartList" class="shopping-item">
                 <img src="{{ item.img }}" />
                 <p class="title">{{ item.title }}</p>
                 <p class="description">{{ item.description }}</p>
