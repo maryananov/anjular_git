@@ -13,8 +13,8 @@
             <ul class="menu__list r-list">
                 <li class="menu__group"><a href="index.html" class="menu__link r-link text-underlined">Home</a></li>
                 <li class="menu__group"><a href="cart.html" class="menu__link r-link text-underlined">Cart: {{ cartItems }}</a></li>
-                <li class="menu__group"><a href="login.html" class="menu__link r-link text-underlined">Log In / Sign Up</a></li>
-            </ul>
+                <li class="menu__group"><a href="login.html" class="menu__link r-link text-underlined">Log In</a></li>
+                <li class="menu__group"><a href="register.html" class="menu__link r-link text-underlined">Sign Up</a></li>            </ul>
         </nav>
     </div>
 
@@ -26,11 +26,13 @@
                 <form ng-submit="submitLogin()">
                     <div class="mb-3">
                         <label for="exampleInputEmail1" class="form-label">Email address</label>
-                        <input type="email" class="form-control border border-primary" id="exampleInputEmail1" aria-describedby="emailHelp">
+                        <input type="email" ng-model="email" class="form-control border border-primary" id="exampleInputEmail1" aria-describedby="emailHelp"><br/>
+                        <span ng-show="errorEmail" class="error">{{ errorEmail }}</span>
                     </div>
                     <div class="mb-3">
                         <label for="exampleInputPassword1" class="form-label">Password</label>
-                        <input type="password" class="form-control border border-primary" id="exampleInputPassword1">
+                        <input type="password" ng-model="password" class="form-control border border-primary" id="exampleInputPassword1"><br/>
+                        <span ng-show="errorPassword" class="error">{{ errorPassword }}</span>
                     </div>
                     <div class="d-grid">
                         <button class="btn btn-primary" type="submit">Login</button>
@@ -41,12 +43,35 @@
     </div>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
-<script src="constants.js"></script>
+
 <script>
     angular.module('marianaApp', []).controller('loginCtrl', function ($scope) {
         $scope.cartItems = JSON.parse(localStorage.getItem('cart') || '[]')?.length;
+        $scope.errorEmail = null;
+        $scope.errorPassword = null;
+        $scope.hasError = false;
 
         $scope.submitLogin = function(){
+            $scope.errorEmail = null;
+            $scope.errorPassword = null;
+            $scope.hasError = false;
+
+            if(!$scope.email){
+                $scope.errorEmail = 'Email is required';
+
+                $scope.hasError = true;
+            }
+
+            if(!$scope.password){
+                $scope.errorPassword = 'Password is required';
+
+                $scope.hasError = true;
+            }
+
+            if($scope.hasError){
+                return false;
+            }
+
             alert("Logged in!");
         }
     });

@@ -12,7 +12,8 @@
             <ul class="menu__list r-list">
                 <li class="menu__group"><a href="index.html" class="menu__link r-link text-underlined">Home</a></li>
                 <li class="menu__group"><a href="cart.html" class="menu__link r-link text-underlined">Cart: {{ cartItems }}</a></li>
-                <li class="menu__group"><a href="login.html" class="menu__link r-link text-underlined">Log In / Sign Up</a></li>
+                <li class="menu__group"><a href="login.html" class="menu__link r-link text-underlined">Log In</a></li>
+                <li class="menu__group"><a href="register.html" class="menu__link r-link text-underlined">Sign Up</a></li>
             </ul>
         </nav>
     </div>
@@ -48,7 +49,7 @@
 <script>
     angular.module('marianaApp', []).controller('productsCtrl', function ($scope) {
         $scope.shoppingList = ShoppingList;
-        $scope.cartItems = JSON.parse(localStorage.getItem('cart') || '[]')?.length;
+        $scope.cartItems = JSON.parse(localStorage.getItem('cart') || '[]')?.length; //
         $scope.sortings = {
             id: 'id',
             price: 'price'
