@@ -13,8 +13,9 @@
             <ul class="menu__list r-list">
                 <li class="menu__group"><a href="index.html" class="menu__link r-link text-underlined">Home</a></li>
                 <li class="menu__group"><a href="cart.html" class="menu__link r-link text-underlined">Cart: {{ cartItems }}</a></li>
-                <li class="menu__group"><a href="login.html" class="menu__link r-link text-underlined">Log In</a></li>
-                <li class="menu__group"><a href="register.html" class="menu__link r-link text-underlined">Sign Up</a></li>            </ul>
+                <li class="menu__group"><!-- directive: log-in-link --></li>
+                <li class="menu__group"><div class="sign-up-link"></div></li>
+            </ul>
         </nav>
     </div>
 
@@ -22,7 +23,7 @@
     <div id="main-container">
         <div class="vh-100 d-flex justify-content-center align-items-center ">
             <div class="col-md-5 p-5 shadow-sm border rounded-5 border-primary bg-white">
-                <h2 class="text-center mb-4 text-primary">Login Form</h2>
+                <login></login>
                 <form ng-submit="submitLogin()">
                     <div class="mb-3">
                         <label for="exampleInputEmail1" class="form-label">Email address</label>
@@ -35,7 +36,7 @@
                         <span ng-show="errorPassword" class="error">{{ errorPassword }}</span>
                     </div>
                     <div class="d-grid">
-                        <button class="btn btn-primary" type="submit">Login</button>
+                        <div login-button></div>
                     </div>
                 </form>
             </div>
@@ -74,6 +75,29 @@
 
             alert("Logged in!");
         }
+    })
+    .directive("login", function() {
+        return {
+            template : "<h1>Login</h1>"
+        };
+    })
+    .directive("loginButton", function() {
+        return {
+            template : "<button class=\"btn btn-primary\" type=\"submit\">Login</button>"
+        };
+    })
+    .directive("signUpLink", function() {
+        return {
+            restrict : "C",
+            template : "<a href=\"register.html\" class=\"menu__link r-link text-underlined\">Sign Up</a>"
+        };
+    })
+    .directive("logInLink", function() {
+        return {
+            restrict : "M",
+            replace : true,
+            template : "<a href=\"login.html\" class=\"menu__link r-link text-underlined\">Log In</a>"
+        };
     });
 </script>
 </body>

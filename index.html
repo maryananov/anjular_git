@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" type="text/css" href="styles.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
 </head>
 <body>
 <div ng-app="marianaApp" ng-controller="productsCtrl">
@@ -14,6 +15,7 @@
                 <li class="menu__group"><a href="cart.html" class="menu__link r-link text-underlined">Cart: {{ cartItems }}</a></li>
                 <li class="menu__group"><a href="login.html" class="menu__link r-link text-underlined">Log In</a></li>
                 <li class="menu__group"><a href="register.html" class="menu__link r-link text-underlined">Sign Up</a></li>
+                <li class="menu__group"><a href="#" ng-click="contactUs()" class="menu__link r-link text-underlined">Contact US</a></li>
             </ul>
         </nav>
     </div>
@@ -43,11 +45,38 @@
             </div>
         </div>
     </div>
+
+    <div id="myModal" ng-show="showModalContactUs" class="modal-contact">
+        <div class="modal-content">
+            <div class="vh-100 d-flex justify-content-center align-items-center ">
+                <div class="col-md-5 p-5 shadow-sm border rounded-5 border-primary bg-white">
+                    <span ng-click="closeContactUs()" class="close-contact">&times;</span>
+                    <h2 class="text-center mb-4 text-primary">Contact US</h2>
+                    <form>
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">Email address</label>
+                            <input type="email" ng-model="email" class="form-control border border-primary" id="exampleInputEmail1" aria-describedby="emailHelp"><br/>
+                            <span ng-show="errorEmail" class="error">{{ errorEmail }}</span>
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">Message</label>
+                            <textarea type="message" ng-model="message" class="form-control border border-primary" id="exampleInputMessage1"></textarea><br/>
+                            <span ng-show="errorEmail" class="error">{{ errorMessage }}</span>
+                        </div>
+                        <div class="d-grid">
+                            <button class="btn btn-primary" type="submit">Contact US</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 <script src="constants.js"></script>
 <script>
     angular.module('marianaApp', []).controller('productsCtrl', function ($scope) {
+        $scope.showModalContactUs = false;
         $scope.shoppingList = ShoppingList;
         $scope.cartItems = JSON.parse(localStorage.getItem('cart') || '[]')?.length; //
         $scope.sortings = {
@@ -55,12 +84,16 @@
             price: 'price'
         }
 
+        $scope.errorEmail = null;
+        $scope.errorMessage = null;
+        $scope.hasError = false;
+
         $scope.addToCart = function(id){
             let currentCart = JSON.parse(localStorage.getItem('cart') || '[]');
 
             if(!currentCart.includes(id)){
                 currentCart.push(id);
-                $scope.cartItems++;
+                $scope.incrementCartNumber();
             }
 
             localStorage.setItem('cart', JSON.stringify(currentCart))
@@ -73,11 +106,19 @@
                 let index = currentCart.indexOf(id);
                 if (index > -1) {
                     currentCart.splice(index, 1);
-                    $scope.cartItems--;
+                    $scope.decrementCartNumber();
                 }
             }
 
             localStorage.setItem('cart', JSON.stringify(currentCart))
+        }
+
+        $scope.incrementCartNumber = function(){
+            $scope.cartItems++;
+        }
+
+        $scope.decrementCartNumber = function(){
+            $scope.cartItems--;
         }
 
         $scope.existsInCart = function(id){
@@ -88,6 +129,38 @@
 
         $scope.filterByName = function () {
             $scope.filterItemsBy = { title: $scope.selectedName }
+        }
+
+        $scope.contactUs = function () {
+            $scope.showModalContactUs = true;
+        }
+
+        $scope.closeContactUs = function () {
+            $scope.showModalContactUs = false;
+        }
+
+        $scope.submitContactUs = function (){
+            $scope.errorEmail = null;
+            $scope.errorMessage = null;
+            $scope.hasError = false;
+
+            if(!$scope.email){
+                $scope.errorEmail = 'Email is required';
+
+                $scope.hasError = true;
+            }
+
+            if(!$scope.message){
+                $scope.errorMessage = 'Message is required';
+
+                $scope.hasError = true;
+            }
+
+            if($scope.hasError){
+                return false;
+            }
+
+            alert('Your message has been sent!');
         }
     });
 </script>

@@ -45,12 +45,16 @@
                 let index = currentCart.indexOf(id);
                 if (index > -1) {
                     currentCart.splice(index, 1);
-                    $scope.cartItems--;
+                    $scope.decrementCartNumber();
                 }
             }
 
             localStorage.setItem('cart', JSON.stringify(currentCart));
             $scope.initialize();
+        }
+
+        $scope.decrementCartNumber = function(){
+            $scope.cartItems--;
         }
 
         $scope.existsInCart = function(id){
